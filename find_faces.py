@@ -1,7 +1,7 @@
 import cv2
 import dlib
 
-sp = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+sp = dlib.shape_predictor('datasets\\shape_predictor_68_face_landmarks.dat')
 detector = dlib.get_frontal_face_detector()
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)

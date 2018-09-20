@@ -14,8 +14,8 @@ def get_name(face_descriptor):
 base = list()
 names = ['Ivan', 'Victor', 'Artem', 'Grisha']
 
-sp = dlib.shape_predictor('databases\\shape_predictor_68_face_landmarks.dat')
-facerec = dlib.face_recognition_model_v1('databases\\dlib_face_recognition_resnet_model_v1.dat')
+sp = dlib.shape_predictor('datasets\\shape_predictor_68_face_landmarks.dat')
+facerec = dlib.face_recognition_model_v1('datasets\\dlib_face_recognition_resnet_model_v1.dat')
 detector = dlib.get_frontal_face_detector()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
