@@ -1,21 +1,13 @@
+import os
 import dlib
 import cv2
 from scipy.spatial import distance
 
+names = []
+base = []
 
-def get_name(face_descriptor):
-    name = "unknown"
-    for i in range(len(base)):
-        if distance.euclidean(face_descriptor, base[i]) < 0.6:
-            name = names[i]
-    return name
-
-
-base = list()
-names = ['Ivan', 'Victor', 'Artem', 'Grisha']
-
-sp = dlib.shape_predictor('datasets\\shape_predictor_68_face_landmarks.dat')
-facerec = dlib.face_recognition_model_v1('datasets\\dlib_face_recognition_resnet_model_v1.dat')
+sp = dlib.shape_predictor('databases\\shape_predictor_68_face_landmarks.dat')
+facerec = dlib.face_recognition_model_v1('databases\\dlib_face_recognition_resnet_model_v1.dat')
 detector = dlib.get_frontal_face_detector()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -28,10 +20,25 @@ def add_to_base(path):
     base.append(facerec.compute_face_descriptor(img, shape))
 
 
-add_to_base("photos\\Ivan.jpg")
-add_to_base("photos\\Victor.jpg")
-add_to_base("photos\\Artem.jpg")
-add_to_base("photos\\Grisha.jpg")
+def complete_base():
+    for f in os.listdir('photos'):
+        names.append(f[:-4])
+        add_to_base('photos\\' + f)
+
+
+complete_base()
+
+
+def get_name(face_descriptor):
+    name = "unknown"
+    min_ = 2
+    for i in range(len(base)):
+        dist = distance.euclidean(face_descriptor, base[i])
+        if dist < 0.6 and dist < min_:
+            min_ = dist
+            name = names[i]
+    return name
+
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
