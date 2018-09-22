@@ -2,12 +2,13 @@ import os
 import dlib
 import cv2
 from scipy.spatial import distance
+from scipy.misc import imresize
 
 names = []
 base = []
 
-sp = dlib.shape_predictor('databases\\shape_predictor_68_face_landmarks.dat')
-facerec = dlib.face_recognition_model_v1('databases\\dlib_face_recognition_resnet_model_v1.dat')
+sp = dlib.shape_predictor('datasets\\shape_predictor_68_face_landmarks.dat')
+facerec = dlib.face_recognition_model_v1('datasets\\dlib_face_recognition_resnet_model_v1.dat')
 detector = dlib.get_frontal_face_detector()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -48,6 +49,7 @@ cap.set(4, 480)
 while True:
     ret, img = cap.read()
     img = cv2.flip(img, 1)
+    img = imresize(img, (img.shape[0] * 2, img.shape[1] * 2))
     # win1.set_image(img)
     dets = detector(img, 0)
     for i in range(len(dets)):
