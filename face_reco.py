@@ -22,7 +22,9 @@ def add_to_base(path):
 
 
 def complete_base():
-    for f in os.listdir('photos'):
+    len_ = len(os.listdir('photos'))
+    for i, f in enumerate(os.listdir('photos')):
+        print("[INFO] processing image {}/{}".format(i + 1, len_))
         names.append(f[:-4])
         add_to_base('photos\\' + f)
 
@@ -41,6 +43,7 @@ def get_name(face_descriptor):
     return name
 
 
+print("[INFO] starting video stream...")
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)

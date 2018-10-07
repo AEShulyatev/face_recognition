@@ -9,7 +9,6 @@ cap.set(3, 640)
 cap.set(4, 480)
 win1 = dlib.image_window()
 
-
 while True:
     ret, img = cap.read()
     img = cv2.flip(img, 1)
