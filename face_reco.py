@@ -3,6 +3,7 @@ import dlib
 import cv2
 from scipy.spatial import distance
 from scipy.misc import imresize
+from time import clock
 
 names, base = eval(open('names_descriptors.txt').read())
 
@@ -24,28 +25,35 @@ def get_name(face_descriptor):
 
 
 print("[INFO] starting video stream...")
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(r"C:\Users\User\Desktop\Фильмы\Матрица.mkv")
 cap.set(3, 640)
 cap.set(4, 480)
+start = clock()
+print(start)
 # win1 = dlib.image_window()
 
 while True:
+    cap.set(cv2.CAP_PROP_POS_MSEC, (clock() - start) * 1000 + 500000)
     ret, img = cap.read()
-    img = cv2.flip(img, 1)
-    img = imresize(img, (img.shape[0] * 2, img.shape[1] * 2))
-    # win1.set_image(img)
-    dets = detector(img, 0)
-    for i in range(len(dets)):
-        d = dets[i]
-        print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
-            i, d.left(), d.top(), d.right(), d.bottom()))
-        shape = sp(img, d)
-        # win1.add_overlay(d)
-        # win1.add_overlay(shape)
-        cv2.putText(img, get_name(facerec.compute_face_descriptor(img, shape)), (d.left() + 5, d.bottom() - 5), font, 1,
-                    (255, 255, 255), 2)
+    if ret:
+        # img = cv2.flip(img, 1)
+        # img = imresize(img, (img.shape[0] * 2, img.shape[1] * 2))
+        # win1.set_image(img)
+        dets = detector(img, 0)
+        for i in range(len(dets)):
+            d = dets[i]
 
-        cv2.rectangle(img, (d.left(), d.bottom()), (d.right(), d.top()), (255, 0, 0), 2)
-    cv2.imshow('video', img)
-    cv2.waitKey(1)
+            shape = sp(img, d)
+            # win1.add_overlay(d)
+            # win1.add_overlay(shape)
+            name = get_name(facerec.compute_face_descriptor(img, shape))
+            cv2.putText(img, name, (d.left() + 5, d.bottom() - 5), font, 1,
+                        (255, 255, 255), 2)
+
+            print("Detection {}: Left: {} Top: {} Right: {} Bottom: {} Name: {}".format(
+                i, d.left(), d.top(), d.right(), d.bottom(), name))
+
+            cv2.rectangle(img, (d.left(), d.bottom()), (d.right(), d.top()), (255, 0, 0), 2)
+        cv2.imshow('video', img)
+        cv2.waitKey(1)
     # win1.clear_overlay()
