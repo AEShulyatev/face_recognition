@@ -29,5 +29,6 @@ def complete_base():
 
 
 complete_base()
-print(names)
-print(base)
+
+with open('names_descriptors.txt', 'w') as f:
+    f.write(repr([names, base]))
